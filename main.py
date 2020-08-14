@@ -38,6 +38,7 @@ while imgcount <= 100:
         print("Converting to CBZ")
         os.rename(Zipname, cbzName)
         browser.close()
+        break
     try:
         imgres = requests.get(imglink)
     except MissingSchema:
