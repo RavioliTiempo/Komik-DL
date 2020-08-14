@@ -2,7 +2,7 @@ import time
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
-pageurl = "https://readcomiconline.to/Comic/Darth-Vader"
+pageUrl = "https://readcomiconline.to/Comic/Darth-Vader"
 
 # /html/body/div[1]/div[5]/div[1]/div[3]/div[2]/div/table/tbody/tr[3]/td[1]/a
 # Grab the links to each comic from the directory page.
@@ -10,7 +10,7 @@ pageurl = "https://readcomiconline.to/Comic/Darth-Vader"
 browser = webdriver.Firefox()
 browser.install_addon('H:\\Projects\\Comic-DL\\uBlock0_1.29.1b1.firefox.signed.xpi', temporary=True)
 
-browser.get(pageurl)
+browser.get(pageUrl)
 time.sleep(20)
 comicList = []
 
