@@ -1,11 +1,11 @@
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from zipfile import ZipFile
-import time, os, requests, re
+import time, os, requests, re, glob
 from requests.exceptions import MissingSchema
 
 browser = webdriver.Firefox()
-browser.install_addon('C:\\Projects\\Comic-DL\\uBlock0_1.29.1b1.firefox.signed.xpi', temporary=True)
+browser.install_addon('H:\\Projects\\Comic-DL\\uBlock0_1.29.1b1.firefox.signed.xpi', temporary=True)
 #comicUrl = input('Comic Url: (ID NEEDED!)')
 
 # TODO: Add img file cleanup after each issue
@@ -23,8 +23,9 @@ def comicDL(comicUrl):
     print('Finding Image \n')
     comicZip = ZipFile(Zipname, 'w')
     imgcount = 1
-    while imgcount <= 100: # Just bruteforces the possible amount of pages        
+    while imgcount <= 300: # Just bruteforces the possible amount of pages        
         imglink = "/html/body/div[1]/div[4]/div[5]/p[%s]/img" % (imgcount) # The XPath for the page img.
+        
         try:
             imglink = browser.find_element_by_xpath(imglink).get_attribute('src')
         except NoSuchElementException:
@@ -32,6 +33,9 @@ def comicDL(comicUrl):
             # Rename the zip to a cbz
             print("Converting to CBZ")
             os.rename(Zipname, cbzName)
+            print('Cleaning up.')
+            for pageImg in glob.glob('*.jpg'):
+                os.remove(pageImg)
            # browser.close()
             break
         try:
@@ -84,5 +88,8 @@ def comicSeries(pageUrl):
 
 
 
+# Download the series
+comicSeries('https://readcomiconline.to/Comic/Darth-Vader-2017')
 
-comicSeries('https://readcomiconline.to/Comic/Jungle-Girl/')
+# Download single issue
+#comicDL()
