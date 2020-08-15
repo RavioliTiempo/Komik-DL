@@ -25,7 +25,8 @@ def comicDL(comicUrl):
     imgcount = 1
     while imgcount <= 300: # Just bruteforces the possible amount of pages        
         imglink = "/html/body/div[1]/div[4]/div[5]/p[%s]/img" % (imgcount) # The XPath for the page img.
-        
+        imgname = "%03d" % (imgcount)
+        imgname = str(imgname) + '.jpg'
         try:
             imglink = browser.find_element_by_xpath(imglink).get_attribute('src')
         except NoSuchElementException:
@@ -44,25 +45,14 @@ def comicDL(comicUrl):
             print('Thats it. No pages left')
         
         # print(imglink)
-        if imgcount < 10:
-            imgname = "0" + str(imgcount)
-            print('Downloading page #: %s' % (imgcount))
-            imgname = imgname + '.jpg'
-            imgfile = open('%s' % (imgname), 'wb')
-            
-            for chunk in imgres.iter_content(10000):
-                imgfile.write(chunk)
-            imgfile.close()
-            comicZip.write(imgname)
-        elif imgcount >= 10:
-            imgname = str(imgcount)
-            print('Downloading Page #: %s' % (imgcount))
-            imgname = imgname + '.jpg'
-            imgfile = open('%s' % (imgname), 'wb')
-            for chunk in imgres.iter_content(10000):
-                imgfile.write(chunk)
-            imgfile.close()
-            comicZip.write(imgname)    
+        
+        print('Downloading page #: %s' % (imgcount))
+        imgname = imgname + '.jpg'
+        imgfile = open('%s' % (imgname), 'wb')
+        for chunk in imgres.iter_content(10000):
+            imgfile.write(chunk)
+        imgfile.close()
+        comicZip.write(imgname)    
         imgcount = imgcount + 1
 
 def comicSeries(pageUrl):
@@ -89,7 +79,7 @@ def comicSeries(pageUrl):
 
 
 # Download the series
-comicSeries('https://readcomiconline.to/Comic/Darth-Vader-2017')
+#comicSeries('https://readcomiconline.to/Comic/Darth-Vader-2017')
 
 # Download single issue
-#comicDL()
+comicDL('https://readcomiconline.to/Comic/Darth-Vader-2017/TPB-2?id=133671')
